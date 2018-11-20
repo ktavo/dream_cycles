@@ -8,13 +8,13 @@ library(corrplot)
 # http://kateto.net/network-visualization
 
 rm(list=ls())
-setwd("/home/juank/Dropbox/00_docencia/2017_DataMining/tpneuro/r")
+setwd("E:/UBA/2018-II/DM en Ciencia y Tecnología/Ciclos Sueño")
 
 N1 <- read.csv("N1promedio.csv",header=FALSE)
 #N2 <- read.csv("N2promedio.csv",header=FALSE)
 #N3 <- read.csv("N3promedio.csv",header=FALSE)
 #W <- read.csv("Wpromedio.csv",header=FALSE)
-aal <- read.csv("../aal.csv", header = F)
+aal <- read.csv("aal_extended.csv", header = F)
 aalnames <- aal[,2] 
 
 ##
@@ -23,12 +23,12 @@ N2 <- as.matrix(N2)
 N3 <- as.matrix(N3)
 W <- as.matrix(W)
 
-# colnames(N1) <- aalnames 
+colnames(N1) <- aalnames 
 # colnames(N2) <- aalnames 
 # colnames(N3) <- aalnames 
 # colnames(W) <- aalnames 
 # 
-# rownames(N1) <- aalnames 
+rownames(N1) <- aalnames 
 # rownames(N2) <- aalnames 
 # rownames(N3) <- aalnames 
 # rownames(W) <- aalnames 
