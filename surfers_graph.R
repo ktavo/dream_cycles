@@ -16,3 +16,6 @@ install.packages("igraph");
 download.file("http://moreno.ss.uci.edu/beach.dat", destfile = "windsurfers.dat")
 ws <- read.table("windsurfers.dat", skip = 7)
 dim(ws)
+
+ws.obs <- as.matrix(ws[1:43, ])
+ws.per <- as.matrix(ws[44:86, ])
