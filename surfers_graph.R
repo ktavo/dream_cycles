@@ -115,6 +115,40 @@ plot(degree.distribution(ws.obs.red),
                          xlab = "Grados", ylab = "Proporción de nodos", type = "h", main ="Observadas")
 plot(degree.distribution(ws.per.red),
       xlab = "Grados", ylab = "Proporción de nodos", type = "h", main ="Percibidas")
+par(mfrow = c(1,1))
+
+
+#Prueba mundo pequeño
+ws.obs.red.plf <- power.law.fit(degree(ws.obs.red)) 
+ws.per.red.plf <- power.law.fit(degree(ws.per.red)) 
+
+
+#Cálculo de asortividad -> en ambos casos los valores sugieren que no hay asociaciones preferenciales
+#entre nodos de un alto grado y por otrolado de bajo grado
+assortativity.degree(ws.obs.red)
+assortativity.degree(ws.per.red)
+
+#Medidas de centralidad
+#Intermedicion
+head(sort(betweenness(ws.obs.red), decreasing = T))
+head(sort(betweenness(ws.per.red), decreasing = T))
+
+#Cercania
+head(sort(closeness(ws.obs.red), decreasing = T))
+head(sort(closeness(ws.per.red), decreasing = T))
+
+#Centralidad de autovectores
+head(sort(eigen_centrality(ws.obs.red)$vector, decreasing = T))
+head(sort(eigen_centrality(ws.per.red)$vector, decreasing = T))
+
+
+
+
+
+
+
+
+
 
 
 
