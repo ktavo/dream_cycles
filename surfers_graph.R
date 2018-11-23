@@ -142,18 +142,25 @@ head(sort(eigen_centrality(ws.obs.red)$vector, decreasing = T))
 head(sort(eigen_centrality(ws.per.red)$vector, decreasing = T))
 
 
+#Clustering
+ws.obs.red.cl.eb <- cluster_edge_betweenness(ws.obs.red, directed = F, merges = T) 
+plot(ws.obs.red, vertex.color = ws.obs.red.cl.eb$membership)
+
+#Observado
+ws.obs.red.cl.lo <- cluster_louvain(ws.obs.red, weights = E(ws.obs.red)$weight)
+plot(ws.obs.red, vertex.color = ws.obs.red.cl.lo$membership)
+#Percibido
+ws.per.red.cl.lo <- cluster_louvain(ws.per.red, weights = E(ws.per.red)$weight)
+plot(ws.per.red, vertex.color = ws.per.red.cl.lo$membership)
+
+#Membership comparison(?)
+table(ws.per.red.cl.lo$membership, ws.obs.red.cl.lo$membership)
+
+plot(ws.obs.red, vertex.color = ws.obs.red.cl.lo$membership)
 
 
-
-
-
-
-
-
-
-
-
-
+plot(ws.obs.red, vertex.color = ws.obs.red.cl.lo$membership, 
+     vertex.shape = ifelse(ws.per.red.cl.lo$membership == 1, "circle", "square") )
 
 
 
