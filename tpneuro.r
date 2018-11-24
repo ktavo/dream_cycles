@@ -40,9 +40,12 @@ corrplot(N1, is.corr=TRUE, title = "N1")#, order="hclust")
 # Aij = 1, if Cij > ro. ro is selected to keep delta (the link density) constant.
 N = dim(N1)[1]
 Nmaxlinks = N*(N-1)
+##############################Delta calculation##############################
 n = 1000
 delta = n/Nmaxlinks
 print(delta)
+##############################Delta calculation##############################
+
 
 diag(N1)<-0
 tmp<-sort(as.vector(N1),decreasing = TRUE)
@@ -103,10 +106,10 @@ k = 0
 for (n in nlist) {
   k = k+1
   dlist[k] = n/Nmaxlinks
-  W.mlist[k] = jk.modularity(W,n)
+  #W.mlist[k] = jk.modularity(W,n)
   N1.mlist[k] = jk.modularity(N1,n)
-  N2.mlist[k] = jk.modularity(N2,n)
-  N3.mlist[k] = jk.modularity(N3,n)
+  #N2.mlist[k] = jk.modularity(N2,n)
+  #N3.mlist[k] = jk.modularity(N3,n)
 }
 
 df <- data.frame(dlist,W.mlist,N1.mlist,N2.mlist,N3.mlist)
@@ -118,3 +121,26 @@ ggplot(df, aes(dlist)) +                    # basic graphical object
   geom_line(aes(y=N1.mlist), colour="green")  + # second layer
   geom_line(aes(y=N2.mlist), colour="blue")  + # second layer
   geom_line(aes(y=N3.mlist), colour="red")  # second layer
+
+##############################################################
+hist(N1[lower.tri(N1)], main = "Histograma Interacciones Percibidas")
+
+##########################Red Con umbral##########################
+umbral <-0.7
+N1_umbral <-N1
+N1_umbral[which(N1_umbral <= umbral)] <- 0
+netN1_umbral <- graph.adjacency(N1_umbral, mode="undirected", diag=FALSE, weighted = T)
+plot(netN1_umbral)
+##########################Red Con umbral##########################
+
+
+net1.cl.eb <- cluster_edge_betweenness(netN1, directed = F, merges = T) 
+plot(netN1, vertex.color = net1.cl.eb$membership)
+
+#Louvain
+net1.cl.lo <- cluster_louvain(netN1, weights = E(netN1)$weight)
+plot(netN1, vertex.color = netN1$membership)
+##############################################################
+
+
+
