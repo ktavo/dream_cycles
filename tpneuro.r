@@ -122,20 +122,54 @@ ggplot(df, aes(dlist)) +                    # basic graphical object
   geom_line(aes(y=N2.mlist), colour="blue")  + # second layer
   geom_line(aes(y=N3.mlist), colour="red")  # second layer
 
+
+
 ##############################################################
 hist(N1[lower.tri(N1)], main = "Histograma Interacciones Percibidas")
 
+
+#Conteo de Nodos y aristas
+vcount(netN1)
+ecount(netN1)
+
 ##########################Red Con umbral##########################
+#umbral <-0.7377# Umbral N1 por defecto
 umbral <-0.7
 N1_umbral <-N1
 N1_umbral[which(N1_umbral <= umbral)] <- 0
 netN1_umbral <- graph.adjacency(N1_umbral, mode="undirected", diag=FALSE, weighted = T)
 plot(netN1_umbral)
+#Conteo de Nodos y Aristas con umbral
+vcount(netN1_umbral)
+ecount(netN1_umbral)
 ##########################Red Con umbral##########################
+
+diameter(netN1)
+get.diameter(netN1)
+diameter(netN1_umbral)
+get.diameter(netN1_umbral)
+#Densidad del grafo, relacion entre aristas y nodos
+graph.density(netN1)
+graph.density(netN1_umbral)
+
+#Coeficiente de clustering local 
+head(transitivity(netN1, type = "local"))
+head(transitivity(netN1_umbral, type = "local"))
+
+#Coeficiente de clustering global
+transitivity(netN1, type = "global")
+transitivity(netN1_umbral, type = "global")
+
 
 
 net1.cl.eb <- cluster_edge_betweenness(netN1, directed = F, merges = T) 
+net1.umbral.cl.eb <- cluster_edge_betweenness(netN1_umbral, directed = F, merges = T) 
+
 plot(netN1, vertex.color = net1.cl.eb$membership)
+plot(netN1_umbral, vertex.color = net1.umbral.cl.eb$membership)
+
+
+
 
 #Louvain
 net1.cl.lo <- cluster_louvain(netN1, weights = E(netN1)$weight)
