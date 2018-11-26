@@ -175,17 +175,6 @@ head(transitivity(netN1_umbral, type = "local"))
 transitivity(netN1, type = "global")
 transitivity(netN1_umbral, type = "global")
 
-###############################here!!!#########################################
-net1.cl.eb <- cluster_edge_betweenness(netN1, directed = F, merges = T) 
-net1.umbral.cl.eb <- cluster_edge_betweenness(netN1_umbral, directed = F, merges = T) 
-###############################here!!!#########################################
-
-
-par(mfrow = c(1,2))
-plot(netN1, vertex.color = net1.cl.eb$membership)
-plot(netN1_umbral, vertex.color = net1.umbral.cl.eb$membership)
-par(mfrow = c(1,1))
-
 #########################Comparación coeficintes de clustering#########################
 par(mfrow = c(1,2))
 hist(transitivity(netN1, type = "local"), 
@@ -216,8 +205,6 @@ head(degree.distribution(netN1_umbral), 15)
 head(degree.distribution(netN1, cumulative = T))
 head(degree.distribution(netN1_umbral, cumulative = T))
 
-
-
 #########################Proporción de Nodos#########################
 par(mfrow = c(1,2))
 plot(degree.distribution(netN1),
@@ -246,11 +233,34 @@ head(sort(eigen_centrality(netN1)$vector, decreasing = T))
 head(sort(eigen_centrality(netN1_umbral)$vector, decreasing = T))
 
 
+###############################Clustering EB#########################################
+net1.cl.eb <- cluster_edge_betweenness(netN1, directed = F, merges = T) 
+net1.umbral.cl.eb <- cluster_edge_betweenness(netN1_umbral, directed = F, merges = T) 
+
+par(mfrow = c(1,2))
+plot(netN1, vertex.color = net1.cl.eb$membership)
+plot(netN1_umbral, vertex.color = net1.umbral.cl.eb$membership)
+par(mfrow = c(1,1))
+############################### END Clustering EB#########################################
 
 
-#Louvain
+###############################Louvain#########################################
 net1.cl.lo <- cluster_louvain(netN1, weights = E(netN1)$weight)
+net1.umbral.cl.lo <- cluster_louvain(netN1_umbral, weights = E(netN1_umbral)$weight)
+
+par(mfrow = c(1,2))
 plot(netN1, vertex.color = netN1$membership)
+plot(netN1_umbral, vertex.color = netN1_umbral$membership)
+par(mfrow = c(1,1))
+
+############################### END Louvain#########################################
+
+#Membership comparison
+table(net1.cl.lo$membership, net1.cl.lo$membership)
+plot(ws.obs.red, vertex.color = net1.cl.lo$membership)
+#Plot for merbenship with circles and squares
+plot(ws.obs.red, vertex.color = ws.obs.red.cl.lo$membership, vertex.shape = ifelse
+     (ws.per.red.cl.lo$membership == 1, "circle", "square") )
 ##############################################################
 
 
