@@ -10,6 +10,20 @@ library(corrplot)
 rm(list=ls())
 setwd("E:/UBA/2018-II/DM en Ciencia y Tecnología/Ciclos Sueño")
 
+########################Generación Redes Promedio########################
+N1 <- read.csv("N1promedio.csv",header=FALSE)
+
+
+mean_maker <- function(sub1, sub2) {
+  mean_result <- (sub1 + sub2)/2
+  return(mean_result)
+}
+
+mean_maker(5,10)
+
+########################FIN Generación Redes Promedio########################
+
+
 N1 <- read.csv("N1promedio.csv",header=FALSE)
 #N2 <- read.csv("N2promedio.csv",header=FALSE)
 #N3 <- read.csv("N3promedio.csv",header=FALSE)
@@ -241,6 +255,13 @@ par(mfrow = c(1,2))
 plot(netN1, vertex.color = net1.cl.eb$membership)
 plot(netN1_umbral, vertex.color = net1.umbral.cl.eb$membership)
 par(mfrow = c(1,1))
+
+par(mfrow = c(1,2))
+plot(netN1, vertex.color = net1.cl.eb$membership, vertex.label=NA, vertex.size=5)
+plot(netN1_umbral, vertex.color = net1.umbral.cl.eb$membership, vertex.label=NA, vertex.size=5)
+par(mfrow = c(1,1))
+
+
 ############################### END Clustering EB#########################################
 
 
