@@ -159,8 +159,8 @@ table(ws.per.red.cl.lo$membership, ws.obs.red.cl.lo$membership)
 plot(ws.obs.red, vertex.color = ws.obs.red.cl.lo$membership)
 
 
-plot(ws.obs.red, vertex.color = ws.obs.red.cl.lo$membership, 
-     vertex.shape = ifelse(ws.per.red.cl.lo$membership == 1, "circle", "square") )
+plot(ws.obs.red, vertex.color = ws.obs.red.cl.lo$membership, vertex.shape = ifelse
+  (ws.per.red.cl.lo$membership == 1, "circle", "square") )
 
 
 

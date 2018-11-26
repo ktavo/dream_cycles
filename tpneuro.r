@@ -64,9 +64,11 @@ ecount(netN1)
 is.simple(netN1)
 is.connected(netN1)
 
-diameter(netN1) # El diametro del componente conexo
+# El diametro del componente conexo
+diameter(netN1) 
 
-graph.density(netN1) # Número de aristas divido número de posibles aristas
+# Número de aristas divido número de posibles aristas
+graph.density(netN1) 
 
 mean(degree(netN1))
 
@@ -124,17 +126,27 @@ ggplot(df, aes(dlist)) +                    # basic graphical object
 
 
 
-##############################################################
+########################Taller Práctico######################################
 hist(N1[lower.tri(N1)], main = "Histograma Interacciones Percibidas")
-
 
 #Conteo de Nodos y aristas
 vcount(netN1)
 ecount(netN1)
 
+#Nodos y aristas
+V(netN1)
+E(netN1)
+
+#¿Loops o aristas múltiples?
+is.simple(netN1)
+
+#¿Completamente conectado?
+is.connected(netN1)
+
+
 ##########################Red Con umbral##########################
 #umbral <-0.7377# Umbral N1 por defecto
-umbral <-0.7
+umbral <-0.5
 N1_umbral <-N1
 N1_umbral[which(N1_umbral <= umbral)] <- 0
 netN1_umbral <- graph.adjacency(N1_umbral, mode="undirected", diag=FALSE, weighted = T)
@@ -144,10 +156,13 @@ vcount(netN1_umbral)
 ecount(netN1_umbral)
 ##########################Red Con umbral##########################
 
+#Diametro Red
 diameter(netN1)
 get.diameter(netN1)
 diameter(netN1_umbral)
 get.diameter(netN1_umbral)
+
+
 #Densidad del grafo, relacion entre aristas y nodos
 graph.density(netN1)
 graph.density(netN1_umbral)
@@ -160,13 +175,75 @@ head(transitivity(netN1_umbral, type = "local"))
 transitivity(netN1, type = "global")
 transitivity(netN1_umbral, type = "global")
 
-
-
+###############################here!!!#########################################
 net1.cl.eb <- cluster_edge_betweenness(netN1, directed = F, merges = T) 
 net1.umbral.cl.eb <- cluster_edge_betweenness(netN1_umbral, directed = F, merges = T) 
+###############################here!!!#########################################
 
+
+par(mfrow = c(1,2))
 plot(netN1, vertex.color = net1.cl.eb$membership)
 plot(netN1_umbral, vertex.color = net1.umbral.cl.eb$membership)
+par(mfrow = c(1,1))
+
+#########################Comparación coeficintes de clustering#########################
+par(mfrow = c(1,2))
+hist(transitivity(netN1, type = "local"), 
+     main = "N1", xlab = "coefs. de clustering")
+hist(transitivity(netN1_umbral, type = "local"), 
+     main = "N1 Umbral", xlab = "coefs. de clustering")
+par(mfrow = c(1,1))
+######################### FIN Comparación coeficintes de clustering#########################
+
+#Grados de entrada y salida
+degree(netN1)
+degree(netN1_umbral)
+
+sort(degree(netN1), decreasing = T)
+sort(degree(netN1_umbral), decreasing = T)
+
+#Empezamos a analizar que sucede a nivel de grados
+qplot(degree(netN1), degree(netN1_umbral))
+
+#Correlación entre el grado que predice el grupo para N1 y N1 con umbral
+cor(degree(netN1), degree(netN1_umbral))
+
+
+#distribuciones de grados y diustribuciones acumuladas
+head(degree.distribution(netN1), 15)
+head(degree.distribution(netN1_umbral), 15)
+
+head(degree.distribution(netN1, cumulative = T))
+head(degree.distribution(netN1_umbral, cumulative = T))
+
+
+
+#########################Proporción de Nodos#########################
+par(mfrow = c(1,2))
+plot(degree.distribution(netN1),
+     xlab = "Grados", ylab = "Proporción de nodos", type = "h", main ="N1")
+plot(degree.distribution(netN1_umbral),
+     xlab = "Grados", ylab = "Proporción de nodos", type = "h", main ="N1_Umbral")
+par(mfrow = c(1,1))
+######################### FIN Proporción de Nodos#########################
+
+#Cálculo de asortividad -> en ambos casos los valores sugieren que no hay asociaciones preferenciales
+#entre nodos de un alto grado y por otrolado de bajo grado
+assortativity.degree(netN1)
+assortativity.degree(netN1_umbral)
+
+#Medidas de centralidad
+#Intermedicion
+head(sort(betweenness(netN1), decreasing = T))
+head(sort(betweenness(netN1_umbral), decreasing = T))
+
+#Cercania
+head(sort(closeness(netN1), decreasing = T))
+head(sort(closeness(netN1_umbral), decreasing = T))
+
+#Centralidad de autovectores
+head(sort(eigen_centrality(netN1)$vector, decreasing = T))
+head(sort(eigen_centrality(netN1_umbral)$vector, decreasing = T))
 
 
 
