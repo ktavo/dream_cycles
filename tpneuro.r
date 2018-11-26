@@ -14,12 +14,14 @@ setwd("E:/UBA/2018-II/DM en Ciencia y Tecnología/Ciclos Sueño")
 N1 <- read.csv("N1promedio.csv",header=FALSE)
 
 
-mean_maker <- function(sub1, sub2) {
-  mean_result <- (sub1 + sub2)/2
+mean_maker <- function(sub1) {
+  mean_result <- (sub1[1] + sub1[2])/2
   return(mean_result)
 }
 
-mean_maker(5,10)
+mean_vector <- c(12,10)
+
+mean_maker(mean_vector)
 
 ########################FIN Generación Redes Promedio########################
 
