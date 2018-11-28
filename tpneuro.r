@@ -1,27 +1,54 @@
-## Load package
-library(igraph)
-# http://igraph.org/r/doc/
-
-library(corrplot)
-
 # https://github.com/cwatson/brainGraph
 # http://kateto.net/network-visualization
 
 rm(list=ls())
 setwd("E:/UBA/2018-II/DM en Ciencia y Tecnología/Ciclos Sueño")
 
+## Load package
+library(igraph)
+# http://igraph.org/r/doc/
+
+library(corrplot)
+
 ########################Generación Redes Promedio########################
 N1 <- read.csv("N1promedio.csv",header=FALSE)
 
+#############################N1#############################
+N1_suj1 <- read.csv("DataSujetos/N1_suj1.csv",header=FALSE)
+N1_suj2 <- read.csv("DataSujetos/N1_suj2.csv",header=FALSE)
+N1_suj3 <- read.csv("DataSujetos/N1_suj3.csv",header=FALSE)
+N1_suj4 <- read.csv("DataSujetos/N1_suj4.csv",header=FALSE)
+N1_suj5 <- read.csv("DataSujetos/N1_suj5.csv",header=FALSE)
+N1_suj6 <- read.csv("DataSujetos/N1_suj6.csv",header=FALSE)
+N1_suj7 <- read.csv("DataSujetos/N1_suj7.csv",header=FALSE)
+N1_suj8 <- read.csv("DataSujetos/N1_suj8.csv",header=FALSE)
+N1_suj9 <- read.csv("DataSujetos/N1_suj9.csv",header=FALSE)
+N1_suj10 <- read.csv("DataSujetos/N1_suj10.csv",header=FALSE)
+N1_suj11 <- read.csv("DataSujetos/N1_suj11.csv",header=FALSE)
+N1_suj12 <- read.csv("DataSujetos/N1_suj12.csv",header=FALSE)
+N1_suj13 <- read.csv("DataSujetos/N1_suj13.csv",header=FALSE)
+N1_suj14 <- read.csv("DataSujetos/N1_suj14.csv",header=FALSE)
+N1_suj15 <- read.csv("DataSujetos/N1_suj15.csv",header=FALSE)
+N1_suj16 <- read.csv("DataSujetos/N1_suj16.csv",header=FALSE)
+N1_suj17 <- read.csv("DataSujetos/N1_suj17.csv",header=FALSE)
+N1_suj18 <- read.csv("DataSujetos/N1_suj18.csv",header=FALSE)
+#############################END N1#############################
 
-mean_maker <- function(sub1) {
-  mean_result <- (sub1[1] + sub1[2])/2
+
+
+mean_maker <- function(suj1, suj2, suj3, suj4, suj5, suj6, suj7, suj8, suj9,suj10, suj11, suj12, suj13, suj14, suj15, suj16,suj17, suj18) {
+  mean_result <- (suj1 + suj2 + suj3 + suj4 + suj5 + suj6 + suj7 + suj8 + suj9 + suj10 + suj11 + suj12 + suj13 + suj14 + suj15 + suj16 + suj17 + suj18)/18
   return(mean_result)
 }
 
-mean_vector <- c(12,10)
+N1_suj1 <- as.matrix(N1_suj1)
+N1_suj2 <- as.matrix(N1_suj2)
 
-mean_maker(mean_vector)
+
+#mean_vector <- c(N1_suj1,N1_suj2)
+
+generated_N1 <- mean_maker(N1_suj1, N1_suj2, N1_suj3, N1_suj4, N1_suj5, N1_suj6, N1_suj7, N1_suj8, N1_suj9, N1_suj10, N1_suj11, N1_suj12, N1_suj13, N1_suj14, N1_suj15, N1_suj16, N1_suj17, N1_suj18)
+generated_N1 <-  round(generated_N1,digits=6)
 
 ########################FIN Generación Redes Promedio########################
 
@@ -143,7 +170,7 @@ ggplot(df, aes(dlist)) +                    # basic graphical object
 
 
 ########################Taller Práctico######################################
-hist(N1[lower.tri(N1)], main = "Histograma Interacciones Percibidas")
+hist(N1[lower.tri(N1)], main = "Histograma Relaciones N1")
 
 #Conteo de Nodos y aristas
 vcount(netN1)
@@ -275,7 +302,6 @@ par(mfrow = c(1,2))
 plot(netN1, vertex.color = netN1$membership)
 plot(netN1_umbral, vertex.color = netN1_umbral$membership)
 par(mfrow = c(1,1))
-
 ############################### END Louvain#########################################
 
 #Membership comparison
