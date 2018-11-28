@@ -116,13 +116,25 @@ generated_N2 <- mean_maker(N2_suj1, N2_suj2, N2_suj3, N2_suj4, N2_suj5, N2_suj6,
 generated_N2 <-  round(generated_N2,digits=6)
 generated_N3 <- mean_maker(N3_suj1, N3_suj2, N3_suj3, N3_suj4, N3_suj5, N3_suj6, N3_suj7, N3_suj8, N3_suj9, N3_suj10, N3_suj11, N3_suj12, N3_suj13, N3_suj14, N3_suj15, N3_suj16, N3_suj17, N3_suj18)
 generated_N3 <-  round(generated_N3,digits=6)
+
+write.csv(generated_W, file = "Wpromedio.csv")
+write.csv(generated_N2, file = "N2promedio.csv")
+write.csv(generated_N3, file = "N3promedio.csv")
+
 ########################FIN Generación Redes Promedio########################
 
-
+W <- read.csv("Wpromedio.csv",header=FALSE)
 N1 <- read.csv("N1promedio.csv",header=FALSE)
-#N2 <- read.csv("N2promedio.csv",header=FALSE)
-#N3 <- read.csv("N3promedio.csv",header=FALSE)
-#W <- read.csv("Wpromedio.csv",header=FALSE)
+N2 <- read.csv("N2promedio.csv",header=FALSE)
+N3 <- read.csv("N3promedio.csv",header=FALSE)
+
+#Adjusting W, N2 and N3 as N1 for 116x116
+W <- W[-1, ]
+W[1] <- NULL
+N2 <- N2[-1, ]
+N2[1] <- NULL
+N3 <- N3[-1, ]
+N3[1] <- NULL
 
 W <- generated_W
 N2 <- generated_N2
@@ -138,17 +150,20 @@ N3 <- as.matrix(N3)
 W <- as.matrix(W)
 
 colnames(N1) <- aalnames 
-# colnames(N2) <- aalnames 
-# colnames(N3) <- aalnames 
-# colnames(W) <- aalnames 
+colnames(N2) <- aalnames 
+colnames(N3) <- aalnames 
+colnames(W) <- aalnames 
 # 
 rownames(N1) <- aalnames 
-# rownames(N2) <- aalnames 
-# rownames(N3) <- aalnames 
-# rownames(W) <- aalnames 
+rownames(N2) <- aalnames 
+rownames(N3) <- aalnames 
+rownames(W) <- aalnames 
 
 ## Cij
+corrplot(W, is.corr=TRUE, title = "W")#, order="hclust")
 corrplot(N1, is.corr=TRUE, title = "N1")#, order="hclust")
+corrplot(N2, is.corr=TRUE, title = "N2")#, order="hclust")
+corrplot(N3, is.corr=TRUE, title = "N3")#, order="hclust")
 
 ## Aij
 # Aij = 1, if Cij > ro. ro is selected to keep delta (the link density) constant.
