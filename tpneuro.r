@@ -12,6 +12,12 @@ library(corrplot)
 
 ########################Generación Redes Promedio########################
 N1 <- read.csv("N1promedio.csv",header=FALSE)
+N2 <- read.csv("N2promedio.csv",header=FALSE)
+N3 <- read.csv("N3promedio.csv",header=FALSE)
+W <- read.csv("wpromedio.csv",header=FALSE)
+
+
+
 
 #############################W#############################
 W_suj1 <- read.csv("DataSujetos/W_suj1.csv",header=FALSE)
@@ -181,22 +187,22 @@ print(delta)
 
 diag(W)<-0
 tmp.W<-sort(as.vector(W),decreasing = TRUE)
-ro.W = tmp[n]
+ro.W = tmp.W[n]
 Wb.W = (W>ro.W)
 
 diag(N1)<-0
 tmp.N1<-sort(as.vector(N1),decreasing = TRUE)
-ro.N1 = tmp[n]
+ro.N1 = tmp.N1[n]
 N1b = (N1>ro.N1)
 
 diag(N2)<-0
 tmp.N2<-sort(as.vector(N2),decreasing = TRUE)
-ro.N2 = tmp[n]
+ro.N2 = tmp.N2[n]
 N2b = (N2>ro.N2)
 
 diag(N3)<-0
 tmp.N3<-sort(as.vector(N3),decreasing = TRUE)
-ro.N3 = tmp[n]
+ro.N3 = tmp.N3[n]
 N3b = (N3>ro.N3)
 
 
@@ -206,7 +212,7 @@ corrplot(N1b, is.corr=TRUE, title = "N1 thresholded", outline=FALSE)#, order="hc
 corrplot(N2b, is.corr=TRUE, title = "N2 thresholded", outline=FALSE)#, order="hclust")
 corrplot(N3b, is.corr=TRUE, title = "N3 thresholded", outline=FALSE)#, order="hclust")
 
-netW <- graph.adjacency(Wb,mode="undirected",diag = FALSE)
+netW <- graph.adjacency(Wb.W,mode="undirected",diag = FALSE)
 V(netW)$media <- aalnames
 plot(netW)
 
@@ -301,6 +307,9 @@ ggplot(df, aes(dlist)) +                    # basic graphical object
 par(mfrow = c(1,2))
 hist(W[lower.tri(W)], main = "Histograma Relaciones W")
 hist(N1[lower.tri(N1)], main = "Histograma Relaciones N1")
+par(mfrow = c(1,1))
+
+par(mfrow = c(1,2))
 hist(N2[lower.tri(N2)], main = "Histograma Relaciones N2")
 hist(N3[lower.tri(N3)], main = "Histograma Relaciones N3")
 par(mfrow = c(1,1))
@@ -318,6 +327,9 @@ is.simple(netN1)
 
 #¿Completamente conectado?
 is.connected(netN1)
+is.connected(netN2)
+is.connected(netN3)
+is.connected(netW)
 
 
 ##########################Red Con umbral##########################
@@ -495,12 +507,17 @@ head(sort(eigen_centrality(netN1_umbral)$vector, decreasing = T))
 
 
 ###############################Clustering EB#########################################
+
+###########Punto 1###########
+####Cluster edge betweenness es Girvan-Newman#########
 netw.cl.eb <- cluster_edge_betweenness(netW, directed = F, merges = T) 
 net1.cl.eb <- cluster_edge_betweenness(netN1, directed = F, merges = T) 
 net2.cl.eb <- cluster_edge_betweenness(netN2, directed = F, merges = T) 
 net3.cl.eb <- cluster_edge_betweenness(netN3, directed = F, merges = T) 
 #Generación para N1 umbral
 net1.umbral.cl.eb <- cluster_edge_betweenness(netN1_umbral, directed = F, merges = T) 
+
+#####¿Opcional 5?##########
 
 #Comparativa entre N1 y N1 umbral
 par(mfrow = c(1,2))
