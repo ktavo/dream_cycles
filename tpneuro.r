@@ -10,12 +10,6 @@ library(igraph)
 
 library(corrplot)
 
-N1 <- read.csv("N1promedio.csv",header=FALSE)
-N2 <- read.csv("N2promedio.csv",header=FALSE)
-N3 <- read.csv("N3promedio.csv",header=FALSE)
-W <- read.csv("wpromedio.csv",header=FALSE)
-
-
 
 W <- read.csv("Wpromedio.csv",header=FALSE)
 N1 <- read.csv("N1promedio.csv",header=FALSE)
@@ -69,15 +63,15 @@ corrplot(N3, is.corr=TRUE, title = "N3")#, order="hclust")
 N = dim(N1)[1]
 Nmaxlinks = N*(N-1)
 ##############################Delta calculation##############################
-n = 700
-delta = n/Nmaxlinks
-print(delta)
-
-n = Nmaxlinks*delta
+#n = 7000
+#delta = n/Nmaxlinks
+#print(delta)
 
 delta = 0.038
+n = Nmaxlinks*delta
 ##############################Delta calculation##############################
 
+############################# Transformación en grafo no pesado ############################# 
 diag(W)<-0
 tmp.W<-sort(as.vector(W),decreasing = TRUE)
 ro.W = tmp.W[n]
@@ -99,30 +93,46 @@ tmp.N3<-sort(as.vector(N3),decreasing = TRUE)
 ro.N3 = tmp.N3[n]
 N3b = (N3>ro.N3)
 
+############################# END Transformación en grafo no pesado ############################# 
 
 
+#########################################Correlation GRaphs#########################################
 corrplot(W, is.corr=TRUE, title = "W thresholded", outline=FALSE)#, order="hclust")
 corrplot(N1b, is.corr=TRUE, title = "N1 thresholded", outline=FALSE)#, order="hclust")
 corrplot(N2b, is.corr=TRUE, title = "N2 thresholded", outline=FALSE)#, order="hclust")
 corrplot(N3b, is.corr=TRUE, title = "N3 thresholded", outline=FALSE)#, order="hclust")
+######################################### END Correlation GRaphs#########################################
 
-netW <- graph.adjacency(Wb.W,mode="undirected",diag = FALSE)
+
+############################# Gráfica Nodos Aristas ############################# 
+
+netW <- graph.adjacency(Wb.W,mode="undirected",diag = FALSE, weighted = TRUE)
 V(netW)$media <- aalnames
-plot(netW)
+V(netW)$color <- "green"
+plot(netW, vertex.label.color = "black", vertex.size=3)
 
-netN1 <- graph.adjacency(N1b,mode="undirected",diag = FALSE)
+
+netN1 <- graph.adjacency(N1b,mode="undirected",diag = FALSE, weighted = TRUE)
 V(netN1)$media <- aalnames
-plot(netN1)
+V(netN1)$color <- "yellow"
+plot(netN1, vertex.label.color = "black", vertex.size=3)
 
-netN2 <- graph.adjacency(N2b,mode="undirected",diag = FALSE)
+
+netN2 <- graph.adjacency(N2b,mode="undirected",diag = FALSE, weighted = TRUE)
 V(netN2)$media <- aalnames
-plot(netN2)
+V(netN2)$color <- "orange"
+plot(netN2, vertex.label.color = "black", vertex.size=3)
 
-netN3 <- graph.adjacency(N3b,mode="undirected",diag = FALSE)
+
+netN3 <- graph.adjacency(N3b,mode="undirected",diag = FALSE, weighted = TRUE)
 V(netN3)$media <- aalnames
-plot(netN3)
+V(netN3)$color <- "red"
+plot(netN3, vertex.label.color = "black", vertex.size=3)
+
+############################# END Gráfica Nodos Aristas ############################# 
 
 
+####################################  Numero de nodos y aristas ####################################
 vcount(netW)
 ecount(netW)
 vcount(netN1)
@@ -131,16 +141,36 @@ vcount(netN2)
 ecount(netN2)
 vcount(netN3)
 ecount(netN3)
+####################################  END Numero de nodos y aristas ####################################
 
+#################################### Grafo Siple? Conectado? ####################################
+is.simple(netW)
+is.connected(netW)
 is.simple(netN1)
 is.connected(netN1)
+is.simple(netN2)
+is.connected(netN2)
+is.simple(netN3)
+is.connected(netN3)
+#################################### END Grafo Siple? Conectado? ####################################
+
+
+#################################### Diametro ####################################
 
 # El diametro del componente conexo
+diameter(netW) 
 diameter(netN1) 
+diameter(netN2) 
+diameter(netN3) 
+
+#################################### END Diametro ####################################
 
 # Número de aristas divido número de posibles aristas
-graph.density(netN1) 
 
+graph.density(netW) 
+mean(degree(netW))
+
+graph.density(netN1) 
 mean(degree(netN1))
 
 plot( degree.distribution(netN1, cumulative = TRUE))
@@ -148,6 +178,7 @@ plot( degree.distribution(netN1, cumulative = TRUE))
 d=degree(netN1)
 h=hist(d,breaks = seq(min(d)-0.5,max(d)+0.5,1))
 plot(log10(h$mids),log10(h$density))
+
 
 netN1.plf = power.law.fit(degree(netN1))
 netN1.plf$KS.p
@@ -197,7 +228,7 @@ ggplot(df, aes(dlist)) +                    # basic graphical object
 
 
 
-########################Taller Práctico######################################
+######################## Taller Práctico######################################
 par(mfrow = c(1,2))
 hist(W[lower.tri(W)], main = "Histograma Relaciones W")
 hist(N1[lower.tri(N1)], main = "Histograma Relaciones N1")
@@ -336,6 +367,7 @@ head(degree.distribution(netN3, cumulative = T))
 head(degree.distribution(netN1_umbral, cumulative = T))
 
 #########################Proporción de Nodos#########################
+
 par(mfrow = c(1,2))
 plot(degree.distribution(netN1),
      xlab = "Grados", ylab = "Proporción de nodos", type = "h", main ="N1")
