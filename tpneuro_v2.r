@@ -103,26 +103,26 @@ N3b = (N3>ro.N3)
 
 netW <- graph.adjacency(Wb.W,mode="undirected",diag = FALSE, weighted = T)
 V(netW)$media <- aalModule
-V(netW)$color <- "green"
-plot(netW, vertex.label.color = "black", vertex.size=3)
+V(netW)$color <- aalModule
+plot(netW, vertex.label.color = "black", vertex.size=5, main = "W")
 
 
 netN1 <- graph.adjacency(N1b,mode="undirected",diag = FALSE, weighted = T)
 V(netN1)$media <- aalModule
-V(netN1)$color <- "yellow"
-plot(netN1, vertex.label.color = "black", vertex.size=3)
+V(netN1)$color <- aalModule
+plot(netN1, vertex.label.color = "black", vertex.size=5, main = "N1")
 
 
 netN2 <- graph.adjacency(N2b,mode="undirected",diag = FALSE, weighted = T)
 V(netN2)$media <- aalModule
-V(netN2)$color <- "orange"
-plot(netN2, vertex.label.color = "black", vertex.size=3)
+V(netN2)$color <- aalModule
+plot(netN2, vertex.label.color = "black", vertex.size=5, main = "N2")
 
 
 netN3 <- graph.adjacency(N3b,mode="undirected",diag = FALSE, weighted = T)
 V(netN3)$media <- aalModule
-V(netN3)$color <- "red"
-plot(netN3, vertex.label.color = "black", vertex.size=3)
+V(netN3)$color <- aalModule
+plot(netN3, vertex.label.color = "black", vertex.size=5, main = "N3")
 
 ############################# END Gráfica Nodos Aristas ############################# 
 
@@ -196,13 +196,13 @@ net1.cl.eb <- cluster_edge_betweenness(netN1, directed = F, merges = F)
 net2.cl.eb <- cluster_edge_betweenness(netN2, directed = F, merges = F) 
 net3.cl.eb <- cluster_edge_betweenness(netN3, directed = F, merges = F) 
 
-V(netN2)$media <- aalnames
+#V(netN2)$media <- aalnames
 
 
 #Comparativa entre W y N1 Corregidas
 par(mfrow = c(1,2))
-plot(netW, vertex.color = netw.cl.eb$membership, vertex.label=aalModule, vertex.size=5, main = "W")
-plot(netN1, vertex.color = net1.cl.eb$membership, vertex.label=aalModule, vertex.size=5, main = "N1")
+plot(netW, vertex.color = netw.cl.eb$membership, vertex.label=aalModule, vertex.size=3, main = "W")
+plot(netN1, vertex.color = net1.cl.eb$membership, vertex.label=aalModule, vertex.size=3, main = "N1")
 par(mfrow = c(1,1))
 
 #Comparativa entre W y N2 Corregida
@@ -213,8 +213,8 @@ par(mfrow = c(1,1))
 
 #Comparativa entre W y N3 Corregida
 par(mfrow = c(1,2))
-plot(netN2, vertex.color = net2.cl.eb$membership, vertex.label=aalModule, vertex.size=5, main = "W")
-plot(netN3, vertex.color = net3.cl.eb$membership, vertex.label=aalModule, vertex.size=5, main = "N3")
+plot(netN2, vertex.color = net2.cl.eb$membership, vertex.label=aalModule, vertex.size=1, main = "W")
+plot(netN3, vertex.color = net3.cl.eb$membership, vertex.label=aalModule, vertex.size=1, main = "N3")
 par(mfrow = c(1,1))
 ##################################Comparativa 4 estados##################################
 par(mfrow = c(2,2))
