@@ -77,7 +77,6 @@ tmp.W<-sort(as.vector(W),decreasing = TRUE)
 ro.W = tmp.W[n]
 Wb.W = (W>ro.W)
 
-
 diag(N1)<-0
 tmp.N1<-sort(as.vector(N1),decreasing = TRUE)
 ro.N1 = tmp.N1[n]
@@ -106,25 +105,25 @@ corrplot(N3b, is.corr=TRUE, title = "N3 thresholded", outline=FALSE)#, order="hc
 
 ############################# Gráfica Nodos Aristas ############################# 
 
-netW <- graph.adjacency(Wb.W,mode="undirected",diag = FALSE, weighted = TRUE)
+netW <- graph.adjacency(Wb.W,mode="undirected",diag = FALSE, weighted = T)
 V(netW)$media <- aalnames
 V(netW)$color <- "green"
 plot(netW, vertex.label.color = "black", vertex.size=3)
 
 
-netN1 <- graph.adjacency(N1b,mode="undirected",diag = FALSE, weighted = TRUE)
+netN1 <- graph.adjacency(N1b,mode="undirected",diag = FALSE, weighted = T)
 V(netN1)$media <- aalnames
 V(netN1)$color <- "yellow"
 plot(netN1, vertex.label.color = "black", vertex.size=3)
 
 
-netN2 <- graph.adjacency(N2b,mode="undirected",diag = FALSE, weighted = TRUE)
+netN2 <- graph.adjacency(N2b,mode="undirected",diag = FALSE, weighted = T)
 V(netN2)$media <- aalnames
 V(netN2)$color <- "orange"
 plot(netN2, vertex.label.color = "black", vertex.size=3)
 
 
-netN3 <- graph.adjacency(N3b,mode="undirected",diag = FALSE, weighted = TRUE)
+netN3 <- graph.adjacency(N3b,mode="undirected",diag = FALSE, weighted = T)
 V(netN3)$media <- aalnames
 V(netN3)$color <- "red"
 plot(netN3, vertex.label.color = "black", vertex.size=3)
@@ -135,11 +134,11 @@ plot(netN3, vertex.label.color = "black", vertex.size=3)
 ####################################  Numero de nodos y aristas ####################################
 vcount(netW)
 ecount(netW)
-vcount(netN1)
+#vcount(netN1)
 ecount(netN1)
-vcount(netN2)
+#vcount(netN2)
 ecount(netN2)
-vcount(netN3)
+#vcount(netN3)
 ecount(netN3)
 ####################################  END Numero de nodos y aristas ####################################
 
@@ -170,12 +169,12 @@ diameter(netN3)
 graph.density(netW) 
 mean(degree(netW))
 
-graph.density(netN1) 
-mean(degree(netN1))
+graph.density(netN3) 
+mean(degree(netN3))
 
-plot( degree.distribution(netN1, cumulative = TRUE))
+plot( degree.distribution(netW, cumulative = TRUE))
 
-d=degree(netN1)
+d=degree(netW)
 h=hist(d,breaks = seq(min(d)-0.5,max(d)+0.5,1))
 plot(log10(h$mids),log10(h$density))
 
@@ -240,8 +239,8 @@ hist(N3[lower.tri(N3)], main = "Histograma Relaciones N3")
 par(mfrow = c(1,1))
 
 #Conteo de Nodos y aristas
-vcount(netN1)
-ecount(netN1)
+vcount(netW)
+ecount(netW)
 
 #Nodos y aristas
 V(netN1)
@@ -271,15 +270,15 @@ ecount(netN1_umbral)
 
 #Diametro Red
 diameter(netW)
-get.diameter(netW)
+#get.diameter(netW)
 diameter(netN1)
-get.diameter(netN1)
+#get.diameter(netN1)
 diameter(netN2)
-get.diameter(netN2)
+#get.diameter(netN2)
 diameter(netN3)
-get.diameter(netN3)
-diameter(netN1_umbral)
-get.diameter(netN1_umbral)
+#get.diameter(netN3)
+#diameter(netN1_umbral)
+#get.diameter(netN1_umbral)
 
 
 #Densidad del grafo, relacion entre aristas y nodos
@@ -304,12 +303,12 @@ transitivity(netN3, type = "global")
 transitivity(netN1_umbral, type = "global")
 
 #########################Comparación coeficintes de clustering#########################
-par(mfrow = c(1,2))
-hist(transitivity(netN1, type = "local"), 
-     main = "N1", xlab = "coefs. de clustering")
-hist(transitivity(netN1_umbral, type = "local"), 
-     main = "N1 Umbral", xlab = "coefs. de clustering")
-par(mfrow = c(1,1))
+#par(mfrow = c(1,2))
+#hist(transitivity(netN1, type = "local"), 
+#     main = "N1", xlab = "coefs. de clustering")
+#hist(transitivity(netN1_umbral, type = "local"), 
+#     main = "N1 Umbral", xlab = "coefs. de clustering")
+#par(mfrow = c(1,1))
 
 par(mfrow = c(1,2))
 hist(transitivity(netW, type = "local"), 
@@ -446,18 +445,18 @@ net1.umbral.cl.eb <- cluster_edge_betweenness(netN1_umbral, directed = F, merges
 #####¿Opcional 5?##########
 
 #Comparativa entre N1 y N1 umbral
-par(mfrow = c(1,2))
-plot(netN1, vertex.color = net1.cl.eb$membership)
-plot(netN1_umbral, vertex.color = net1.umbral.cl.eb$membership)
-par(mfrow = c(1,1))
+#par(mfrow = c(1,2))
+#plot(netN1, vertex.color = net1.cl.eb$membership)
+#plot(netN1_umbral, vertex.color = net1.umbral.cl.eb$membership)
+#par(mfrow = c(1,1))
 
 #Comparativa entre N1 y N1 umbral Corregida
-par(mfrow = c(1,2))
-plot(netN1, vertex.color = net1.cl.eb$membership, vertex.label=NA, vertex.size=5)
-plot(netN1_umbral, vertex.color = net1.umbral.cl.eb$membership, vertex.label=NA, vertex.size=5)
-par(mfrow = c(1,1))
+#par(mfrow = c(1,2))
+#plot(netN1, vertex.color = net1.cl.eb$membership, vertex.label=NA, vertex.size=5)
+#plot(netN1_umbral, vertex.color = net1.umbral.cl.eb$membership, vertex.label=NA, vertex.size=5)
+#par(mfrow = c(1,1))
 
-#Comparativa entre W y N1 Corregida
+#Comparativa entre W y N1 Corregidas
 par(mfrow = c(1,2))
 plot(netW, vertex.color = netw.cl.eb$membership, vertex.label=NA, vertex.size=5)
 plot(netN1, vertex.color = net1.cl.eb$membership, vertex.label=NA, vertex.size=5)
